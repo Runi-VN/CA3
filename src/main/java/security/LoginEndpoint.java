@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JOSEObjectType;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSSigner;
@@ -67,7 +68,7 @@ public class LoginEndpoint {
       res.append(",");
     }
     String rolesAsString = res.length() > 0 ? res.substring(0, res.length() - 1) : "";
-    String issuer = "semesterstartcode-dat3";
+    String issuer = "HoldKrykke";
 
     JWSSigner signer = new MACSigner(SharedSecret.getSharedKey());
     Date date = new Date();
@@ -79,7 +80,12 @@ public class LoginEndpoint {
             .issueTime(date)
             .expirationTime(new Date(date.getTime() + TOKEN_EXPIRE_TIME))
             .build();
-    SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
+    
+    JWSHeader.Builder builder = new JWSHeader.Builder(JWSAlgorithm.HS256); //sets 'alg':'256'
+    builder.type(JOSEObjectType.JWT); //sets 'typ':'JWT'
+    JWSHeader header = builder.build();
+    SignedJWT signedJWT = new SignedJWT(header, claimsSet);
+    
     signedJWT.sign(signer);
     return signedJWT.serialize();
 
