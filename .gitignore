@@ -3,6 +3,8 @@
 
 **/SetupTestUsers.java
 
+.settings/
+
 # Following 3 lines were here when we cloned startcode:
 **/target/
 **/nb-configuration.xml
