@@ -1,8 +1,6 @@
 # Created by https://www.gitignore.io/api/react,reactnative
 # Edit at https://www.gitignore.io/?templates=react,reactnative
 
-**/SetupTestUsers.java
-
 .settings/
 
 # Following 3 lines were here when we cloned startcode:
