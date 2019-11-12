@@ -63,6 +63,7 @@ public class ApiFacade {
             HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json;charset=UTF-8");
+            connection.setRequestProperty("user-agent", "Application");
             try (Scanner scan = new Scanner(connection.getInputStream())) {
                 String response = "";
                 while(scan.hasNext()) {
