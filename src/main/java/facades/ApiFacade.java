@@ -26,13 +26,11 @@ import javafx.util.Pair;
  */
 public class ApiFacade {
     private ExecutorService executor = Executors.newCachedThreadPool();
-    private List<Future<String>> futureList;
     private String url = "https://swapi.co/api/";
     private String[] ENDPOINTS = {"people/", "planets/", "starships/", "vehicles/", "species/"};
 
 
     public Map<String, String> allApiData() throws InterruptedException, ExecutionException, TimeoutException {
-        futureList = new ArrayList();
         Map<String, String> result = new HashMap();
         Queue<Future<Pair<String, String>>> queue = new ArrayBlockingQueue(ENDPOINTS.length);
 
@@ -54,6 +52,7 @@ public class ApiFacade {
                 queue.add(epPair);
             }
         }
+        executor.shutdown();
         return result;
     }
 
