@@ -79,11 +79,13 @@ public class LoginEndpointTest {
             User both = new User("user_admin", "test");
             both.addRole(userRole);
             both.addRole(adminRole);
+            User nobody = new User("nobody", "test"); //no role connected
             em.persist(userRole);
             em.persist(adminRole);
             em.persist(user);
             em.persist(admin);
             em.persist(both);
+            em.persist(nobody);
             System.out.println("Saved test data to database");
             em.getTransaction().commit();
         } finally {
@@ -223,5 +225,54 @@ public class LoginEndpointTest {
             .body("message", equalTo("Not authenticated - do login"));
   }
     
+    /**
+     * Testing 'getMultipleRoles' endpoint. Meant to allow registered users only
+     *
+     * @RolesAllowed({"admin", "user"})
+     */
+    @Test
+    public void testMultipleRolesEndpoint_user() {
+        login("user", "test");
+        given()
+            .contentType("application/json")
+            .header("x-access-token", securityToken)
+            .when()
+            .get("/info/both").then()
+            .statusCode(200)
+            .body("msg", equalTo("Hello to (admin OR user, but not a nobody) User: user"));
+    }
     
+    /**
+     * Testing 'getMultipleRoles' endpoint. Meant to allow registered users only
+     *
+     * @RolesAllowed({"admin", "user"})
+     */
+    @Test
+    public void testMultipleRolesEndpoint_admin() {
+        login("admin", "test");
+        given()
+            .contentType("application/json")
+            .header("x-access-token", securityToken)
+            .when()
+            .get("/info/both").then()
+            .statusCode(200)
+            .body("msg", equalTo("Hello to (admin OR user, but not a nobody) User: admin"));
+    }
+    
+    /**
+     * Testing 'getMultipleRoles' endpoint. Meant to allow registered users only
+     *
+     * @RolesAllowed({"admin", "user"})
+     */
+    @Test
+    public void testMultipleRolesEndpoint_nobody() {
+        //login("nobody", "test");
+        given()
+                .contentType("application/json")
+                //.header("x-access-token", securityToken)
+                .when()
+                .get("/info/both").then().log().body()
+                .statusCode(403)
+                .body("message", equalTo("Not authenticated - do login"));
+    }
 }
