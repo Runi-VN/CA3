@@ -79,7 +79,7 @@ public class DemoResource {
     @RolesAllowed({"admin", "user"})
     public String getMultipleRoles() {
         String thisuser = securityContext.getUserPrincipal().getName();
-        return "{\"msg\": \"Hello to (admin OR user) User: " + thisuser + "\"}";
+        return "{\"msg\": \"Hello to (admin OR user, but not a nobody) User: " + thisuser + "\"}";
     }
     
     /**
@@ -91,7 +91,7 @@ public class DemoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("bothrestricted")
-    @RolesAllowed(value = {"admin","user"})
+    @RolesAllowed(value = {"admin, user"})
     public String getBothRoles() {
         String thisuser = securityContext.getUserPrincipal().getName();
         return "{\"msg\": \"Hello to (superuser) User: " + thisuser + "\"}";
