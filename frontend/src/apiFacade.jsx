@@ -1,5 +1,6 @@
-const URL = "http://localhost:8080/securitystarter";
-function handleHttpErrors(res) {
+//Change this before deployment (production)
+import { localURL as URL} from "./settings.js";
+function handleHttpErrors(res) { //what
   if (!res.ok) {
     return Promise.reject({ status: res.status, fullError: res.json() });
   }
