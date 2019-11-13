@@ -41,6 +41,7 @@ public class SWAPIRessource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("five")
+    @RolesAllowed({"admin", "user"})
     public Map getDataFrom5Endpoints() throws Exception {
         return facade.allApiData();
     }
