@@ -42,8 +42,8 @@ const ApiFacade = () => {
     let usertype = "no role";
     console.log(roles);
     if (roles.includes("user") && roles.includes("admin")) usertype = "both";
-    else if (roles[0] === "user") usertype = "user";
-    else if (roles[0] === "admin") usertype = "admin";
+    else if (roles.includes("user")) usertype = "user";
+    else if (roles.includes("admin")) usertype = "admin";
     const options = makeOptions("GET",true); //True add's the token
     return fetch(URL + "/api/info/" + usertype, options).then(handleHttpErrors);
   }
