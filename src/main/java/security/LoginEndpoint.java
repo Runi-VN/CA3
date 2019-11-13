@@ -11,6 +11,7 @@ import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import entities.Role;
 import facades.UserFacade;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +26,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import errorhandling.AuthenticationException;
 import errorhandling.GenericExceptionMapper;
+import java.util.ArrayList;
 import javax.persistence.EntityManagerFactory;
 import utils.EMF_Creator;
 
@@ -49,6 +51,12 @@ public class LoginEndpoint {
       JsonObject responseJson = new JsonObject();
       responseJson.addProperty("username", username);
       responseJson.addProperty("token", token);
+      List<String> roles = new ArrayList();
+      user.getRoleList().forEach((role) ->
+        {
+            roles.add(role.getRoleName());
+        });
+      responseJson.addProperty("roles", new Gson().toJson(roles));
       return Response.ok(new Gson().toJson(responseJson)).build();
 
     } catch (JOSEException | AuthenticationException ex) {
