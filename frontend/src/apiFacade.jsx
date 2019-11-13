@@ -38,13 +38,18 @@ const ApiFacade = () => {
     return loggedIn;
   }
   
+  //Roles is passed in as parameter from the LoggedIn component in App.js
   const fetchData = (roles) => {
+    //In order to use the correct endpoints we have to check the roles of the user
     let usertype = "no role";
-    console.log(roles);
+    //Currently we have three endpoints: "user", "admin" and "both"
+    //so we just check the roles array to see the roles of the logged in user
+    //Check line 54-55 in LoginEndpoint.java (backend)
     if (roles.includes("user") && roles.includes("admin")) usertype = "both";
     else if (roles.includes("user")) usertype = "user";
     else if (roles.includes("admin")) usertype = "admin";
     const options = makeOptions("GET",true); //True add's the token
+    //The usertype is added to the URL to ensure the right endpoint is used
     return fetch(URL + "/api/info/" + usertype, options).then(handleHttpErrors);
   }
 
