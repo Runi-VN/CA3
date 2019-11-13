@@ -1,6 +1,6 @@
 //Change this before deployment (production)
 import { localURL as URL} from "./settings.js";
-function handleHttpErrors(res) { //what
+function handleHttpErrors(res) {
   if (!res.ok) {
     return Promise.reject({ status: res.status, fullError: res.json() });
   }
