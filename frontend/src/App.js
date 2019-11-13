@@ -1,82 +1,103 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import facade from "./apiFacade";
-class LogIn extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { username: "", password: "" };
-  }
-  login = evt => {
+import "bootstrap/dist/css/bootstrap.min.css";
+
+const LogIn = ({ login, message }) => {
+  const [user, setUser] = useState({ username: "", password: "" });
+
+  function log_in(evt) {
     evt.preventDefault();
-    this.props.login(this.state.username, this.state.password);
+    login(user.username, user.password);
+  }
+
+  const onChange = evt => {
+    setUser({ ...user, [evt.target.id]: evt.target.value });
   };
-  onChange = evt => {
-    this.setState({ [evt.target.id]: evt.target.value });
-  };
-  render() {
-    return (
-      <div>
-        <h2>Login</h2>
-        <p>{this.props.message}</p>
-        <form onSubmit={this.login} onChange={this.onChange}>
-          <input placeholder="User Name" id="username" />
-          <input placeholder="Password" id="password" type="password" />
-          <button>Login</button>
-        </form>
-      </div>
-    );
-  }
-}
-class LoggedIn extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { dataFromServer: "Fetching!!" };
-  }
-  componentDidMount() {
-    facade.fetchData().then(res => this.setState({ dataFromServer: res }));
-  }
-  render() {
-    return (
-      <div>
-        <h2>Data Received from server</h2>
-        <h3>{JSON.stringify(this.state.dataFromServer)}</h3>
-      </div>
-    );
-  }
-}
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { loggedIn: false, message: "" };
-  }
-  logout = () => {
+
+  return (
+    <div>
+      <h2>Login</h2>
+      <form onSubmit={log_in}>
+        <input placeholder="User Name" id="username" onChange={onChange} />{" "}
+        <input
+          placeholder="Password"
+          id="password"
+          type="password"
+          onChange={onChange}
+        />{" "}
+        <button className="btn btn-primary">Login</button>
+        <br></br>
+        <p>{message}</p>
+      </form>
+    </div>
+  );
+};
+
+const LoggedIn = ({ roles }) => {
+  const [dataFromServer, setDataFromServer] = useState("");
+
+  useEffect(() => {
+    function update() {
+      facade
+        .fetchData(roles)
+        .then(res => setDataFromServer(res))
+        .catch(err => {
+          if (err.status) {
+            err.fullError.then(e => console.log(e.code, e.message));
+          } else {
+            console.log("Network error");
+          }
+        });
+    }
+    update();
+  }, []);
+
+  return (
+    <>
+      <h2>Data Received from server</h2>
+      <p>{JSON.stringify(dataFromServer)}</p>
+    </>
+  );
+};
+
+const App = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [message, setMessage] = useState("");
+  const [roles, setRoles] = useState([]);
+  const logout = () => {
     facade.logout();
-    this.setState({ loggedIn: false });
+    setLoggedIn(false);
   };
-  login = (user, pass) => {
+  const login = (user, pass) => {
     facade
-      .login(user, pass)
-      .then(res => this.setState({ loggedIn: true }))
-      .catch(res => {
-        if (res.status) {
-          this.setState({ message: "Wrong login credentials" });
+      .login(user, pass, setRoles)
+      .then(res => {
+        setMessage("");
+        setLoggedIn(true);
+      })
+      .catch(err => {
+        if (err.status) {
+          setMessage("Failed to log in, check your information");
+          err.fullError.then(e => console.log(e.code, e.message));
         } else {
-          console.log("No response at all. Server might be down.");
+          console.log("Network error");
         }
       });
   };
-  render() {
-    return (
-      <div style={{ margin: "50pt" }}>
-        {!this.state.loggedIn ? (
-          <LogIn login={this.login} message={this.state.message} />
-        ) : (
-          <div>
-            <LoggedIn />
-            <button onClick={this.logout}>Logout</button>
-          </div>
-        )}
-      </div>
-    );
-  }
-}
+
+  return (
+    <div className="container">
+      {!loggedIn ? (
+        <LogIn login={login} message={message} />
+      ) : (
+        <div>
+          <LoggedIn roles={roles}/>
+          <button className="btn btn-primary" onClick={logout}>
+            Logout
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
 export default App;
