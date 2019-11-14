@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator.DbSelector;
 import utils.EMF_Creator.Strategy;
@@ -31,6 +32,11 @@ public class FacadeExampleTest {
     // ROLES
     private static Role userRole;
     private static Role adminRole;
+    
+    // NON-HASHED PASSWORDS
+    private static final String userPass = "user";
+    private static final String adminPass = "admin";
+    private static final String bothPass = "both";
 
     public FacadeExampleTest() {
     }
@@ -42,9 +48,9 @@ public class FacadeExampleTest {
         facade = UserFacade.getUserFacade(emf);
 
         // SET UP USERS
-        user = new User("user", "user");
-        admin = new User("admin", "admin");
-        both = new User("both", "both");
+        user = new User("user", userPass);
+        admin = new User("admin", adminPass);
+        both = new User("both", bothPass);
 
         // SET UP ROLES
         userRole = new Role("user");
@@ -76,7 +82,9 @@ public class FacadeExampleTest {
         em.persist(both);
         em.getTransaction().commit();
 
-        System.out.println("PW HASH CHECK: " + user.getUserPass());
+        System.out.println("USER HASH CHECK: " + user.getUserPass());
+        System.out.println("ADMIN HASH CHECK: " + admin.getUserPass());
+        System.out.println("BOTH HASH CHECK: " + both.getUserPass());
         System.out.println("Created TEST Users");
     }
 
@@ -108,8 +116,7 @@ public class FacadeExampleTest {
         User expected = user;
         // Act
         String username = expected.getUserName();
-        String password = expected.getUserPass();
-        User actual = facade.getVeryfiedUser(username, password);
+        User actual = facade.getVeryfiedUser(username, userPass);
         // Assert
         assertEquals(expected, actual);
 
@@ -117,8 +124,7 @@ public class FacadeExampleTest {
         expected = admin;
         // Act
         username = expected.getUserName();
-        password = expected.getUserPass();
-        actual = facade.getVeryfiedUser(username, password);
+        actual = facade.getVeryfiedUser(username, adminPass);
         // Assert
         assertEquals(expected, actual);
 
@@ -126,8 +132,7 @@ public class FacadeExampleTest {
         expected = both;
         // Act
         username = expected.getUserName();
-        password = expected.getUserPass();
-        actual = facade.getVeryfiedUser(username, password);
+        actual = facade.getVeryfiedUser(username, bothPass);
         // Assert
         assertEquals(expected, actual);
     }
