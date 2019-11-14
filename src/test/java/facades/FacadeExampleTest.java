@@ -2,6 +2,8 @@ package facades;
 
 import utils.EMF_Creator;
 import entities.RenameMe;
+import entities.Role;
+import entities.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
@@ -22,57 +24,81 @@ public class FacadeExampleTest {
     private static EntityManagerFactory emf;
     private static FacadeExample facade;
 
+    // USERS
+    private static User user;
+    private static User admin;
+    private static User both;
+    
+    // ROLES
+    private static Role userRole;
+    private static Role adminRole;
+
     public FacadeExampleTest() {
     }
 
-    //@BeforeAll
-    public static void setUpClass() {
-        emf = EMF_Creator.createEntityManagerFactory(
-                "pu",
-                "jdbc:mysql://localhost:3307/startcode_test",
-                "dev",
-                "ax2",
-                EMF_Creator.Strategy.CREATE);
-        facade = FacadeExample.getFacadeExample(emf);
-    }
-
-    /*   **** HINT **** 
-        A better way to handle configuration values, compared to the UNUSED example above, is to store those values
-        ONE COMMON place accessible from anywhere.
-        The file config.properties and the corresponding helper class utils.Settings is added just to do that. 
-        See below for how to use these files. This is our RECOMENDED strategy
-     */
     @BeforeAll
-    public static void setUpClassV2() {
-       emf = EMF_Creator.createEntityManagerFactory(DbSelector.TEST,Strategy.DROP_AND_CREATE);
-       facade = FacadeExample.getFacadeExample(emf);
+    public static void setUpClass() {
+        // SET UP CONNECTION AND FACADE
+        emf = EMF_Creator.createEntityManagerFactory(DbSelector.TEST, Strategy.DROP_AND_CREATE);
+        facade = FacadeExample.getFacadeExample(emf);
+
+        // SET UP USERS
+        user = new User("user", "user");
+        admin = new User("admin", "admin");
+        both = new User("both", "both");
+        
+        // SET UP ROLES
+        userRole = new Role("user");
+        adminRole = new Role("admin");
+        
+        // ADD ROLES.
+        user.addRole(userRole);
+        admin.addRole(adminRole);
+        both.addRole(userRole);
+        both.addRole(adminRole);
     }
 
     @AfterAll
     public static void tearDownClass() {
-//        Clean up database after test is done or use a persistence unit with drop-and-create to start up clean on every test
+    // Clean up database after test is done or use a persistence unit with drop-and-create to start up clean on every test
     }
 
     // Setup the DataBase in a known state BEFORE EACH TEST
-    //TODO -- Make sure to change the script below to use YOUR OWN entity class
+    // TODO -- Make sure to change the script below to use YOUR OWN entity class
     @BeforeEach
     public void setUp() {
         EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.createNamedQuery("RenameMe.deleteAllRows").executeUpdate();
-            em.persist(new RenameMe("Some txt", "More text"));
-            em.persist(new RenameMe("aaa", "bbb"));
-
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+        // ADD ENTITIES TO DATABASE BEFORE EACH TEST 
+        em.getTransaction().begin();
+        em.persist(userRole);
+        em.persist(adminRole);
+        em.persist(user);
+        em.persist(admin);
+        em.persist(both);
+        em.getTransaction().commit();
+        
+        System.out.println("PW HASH CHECK: " + user.getUserPass());
+        System.out.println("Created TEST Users");
     }
 
     @AfterEach
     public void tearDown() {
 //        Remove any data after each test was run
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+            em.getTransaction().commit();
+
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
     }
 
     // TODO: Delete or change this method 
