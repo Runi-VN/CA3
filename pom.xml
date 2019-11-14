@@ -15,11 +15,16 @@
         
         <!-- TODO: Change the URL to your own tomcat server. Used to deploy your WAR-file 
         -->
-        <remote.server>http://157.230.21.103/manager/text</remote.server>
+        <remote.server>https://maltemagnussen.com/manager/text</remote.server>
         
     </properties>
     
     <dependencies>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>11</version>
+        </dependency>
         <dependency>
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
@@ -125,7 +130,7 @@
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-grizzly2-http</artifactId>
             <version>2.29</version>
-<!--             <scope>test</scope>-->
+            <!--             <scope>test</scope>-->
         </dependency>
         
         <dependency>
