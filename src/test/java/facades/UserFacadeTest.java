@@ -6,8 +6,10 @@ import entities.User;
 import errorhandling.AuthenticationException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.ws.rs.WebApplicationException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,7 +21,7 @@ import utils.EMF_Creator.Strategy;
 
 //Uncomment the line below, to temporarily disable this test
 //@Disabled
-public class FacadeExampleTest {
+public class UserFacadeTest {
 
     private static EntityManagerFactory emf;
     private static UserFacade facade;
@@ -32,13 +34,13 @@ public class FacadeExampleTest {
     // ROLES
     private static Role userRole;
     private static Role adminRole;
-    
+
     // NON-HASHED PASSWORDS
     private static final String userPass = "user";
     private static final String adminPass = "admin";
     private static final String bothPass = "both";
 
-    public FacadeExampleTest() {
+    public UserFacadeTest() {
     }
 
     @BeforeAll
@@ -135,5 +137,12 @@ public class FacadeExampleTest {
         actual = facade.getVeryfiedUser(username, bothPass);
         // Assert
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testVerifyUsersWrong() throws Exception {
+        Assertions.assertThrows(AuthenticationException.class, () -> {
+            facade.getVeryfiedUser("WRONG", "WRONG");
+        });
     }
 }
