@@ -70,7 +70,7 @@ const LogInScreen = ({ permission }) => {
       });
   };
 
-  // Lifts up the state of loggedIn. So that we can make routes private.
+  // Lifts up the state of loggedIn so that we can make routes private.
   useEffect(() => {
     permission(loggedIn);
   }, [loggedIn]);
@@ -87,6 +87,7 @@ const LogInScreen = ({ permission }) => {
           </button>
         </div>
       )}
+      <br></br>
       <Link to="/">Back to WelcomePage</Link>
     </div>
   );

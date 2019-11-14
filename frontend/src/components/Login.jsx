@@ -59,6 +59,8 @@ export const LoggedIn = ({ roles }) => {
       <h2>Data Received from server</h2>
       <p>{JSON.stringify(dataFromServer)}</p>
       <Link to="/swapi">Swapi</Link>
+      <br></br>
+      <br></br>
     </>
   );
 };
