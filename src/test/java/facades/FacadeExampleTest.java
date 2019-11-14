@@ -28,7 +28,7 @@ public class FacadeExampleTest {
     private static User user;
     private static User admin;
     private static User both;
-    
+
     // ROLES
     private static Role userRole;
     private static Role adminRole;
@@ -46,11 +46,11 @@ public class FacadeExampleTest {
         user = new User("user", "user");
         admin = new User("admin", "admin");
         both = new User("both", "both");
-        
+
         // SET UP ROLES
         userRole = new Role("user");
         adminRole = new Role("admin");
-        
+
         // ADD ROLES.
         user.addRole(userRole);
         admin.addRole(adminRole);
@@ -60,7 +60,7 @@ public class FacadeExampleTest {
 
     @AfterAll
     public static void tearDownClass() {
-    // Clean up database after test is done or use a persistence unit with drop-and-create to start up clean on every test
+        // Clean up database after test is done or use a persistence unit with drop-and-create to start up clean on every test
     }
 
     // Setup the DataBase in a known state BEFORE EACH TEST
@@ -76,24 +76,20 @@ public class FacadeExampleTest {
         em.persist(admin);
         em.persist(both);
         em.getTransaction().commit();
-        
+
         System.out.println("PW HASH CHECK: " + user.getUserPass());
         System.out.println("Created TEST Users");
     }
 
     @AfterEach
     public void tearDown() {
-//        Remove any data after each test was run
+        // Remove any data after each test was run
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
-            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+            em.createNamedQuery("User.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Role.deleteAllRows").executeUpdate();
             em.getTransaction().commit();
-
         } catch (Exception e) {
             em.getTransaction().rollback();
         } finally {
