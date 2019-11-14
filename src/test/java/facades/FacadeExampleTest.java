@@ -1,28 +1,27 @@
 package facades;
 
 import utils.EMF_Creator;
-import entities.RenameMe;
 import entities.Role;
 import entities.User;
+import errorhandling.AuthenticationException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import utils.Settings;
 import utils.EMF_Creator.DbSelector;
 import utils.EMF_Creator.Strategy;
 
 //Uncomment the line below, to temporarily disable this test
-@Disabled
+//@Disabled
 public class FacadeExampleTest {
 
     private static EntityManagerFactory emf;
-    private static FacadeExample facade;
+    private static UserFacade facade;
 
     // USERS
     private static User user;
@@ -40,7 +39,7 @@ public class FacadeExampleTest {
     public static void setUpClass() {
         // SET UP CONNECTION AND FACADE
         emf = EMF_Creator.createEntityManagerFactory(DbSelector.TEST, Strategy.DROP_AND_CREATE);
-        facade = FacadeExample.getFacadeExample(emf);
+        facade = UserFacade.getUserFacade(emf);
 
         // SET UP USERS
         user = new User("user", "user");
@@ -92,15 +91,44 @@ public class FacadeExampleTest {
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
+            System.out.println("Error in tearDown FacadeExampleTest. Message: " + e.getMessage());
         } finally {
             em.close();
         }
     }
 
-    // TODO: Delete or change this method 
     @Test
-    public void testAFacadeMethod() {
-        assertEquals(2, facade.getRenameMeCount(), "Expects two rows in the database");
+    public void testGetFacade() {
+        assertNotNull(facade);
     }
 
+    @Test
+    public void testVerifyUsers() throws AuthenticationException {
+        // Arrange 
+        User expected = user;
+        // Act
+        String username = expected.getUserName();
+        String password = expected.getUserPass();
+        User actual = facade.getVeryfiedUser(username, password);
+        // Assert
+        assertEquals(expected, actual);
+
+        // Repeat for Admin
+        expected = admin;
+        // Act
+        username = expected.getUserName();
+        password = expected.getUserPass();
+        actual = facade.getVeryfiedUser(username, password);
+        // Assert
+        assertEquals(expected, actual);
+
+        // Repeat for Both
+        expected = both;
+        // Act
+        username = expected.getUserName();
+        password = expected.getUserPass();
+        actual = facade.getVeryfiedUser(username, password);
+        // Assert
+        assertEquals(expected, actual);
+    }
 }
