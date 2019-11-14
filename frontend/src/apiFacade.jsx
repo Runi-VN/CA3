@@ -39,6 +39,13 @@ const ApiFacade = () => {
     return loggedIn;
   }
   
+  const fetchSwapi = () => {
+    //Remember to always include options from the makeOptions fucntion with >true< as the second parameter
+    //if you want to access a protected endpoint
+    const options = makeOptions("GET",true); //True add's the token
+    return fetch(URL + "/api/info/five", options).then(handleHttpErrors);
+  }
+
   //Roles is passed in as parameter from the LoggedIn component in App.js
   const fetchData = (roles) => {
     //In order to use the correct endpoints we have to check the roles of the user
@@ -74,7 +81,8 @@ const ApiFacade = () => {
   return {
     login,
     logout,
-    fetchData
+    fetchData,
+    fetchSwapi
   };
 };
 
