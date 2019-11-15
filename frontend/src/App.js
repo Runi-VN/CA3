@@ -4,16 +4,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {LogIn, LoggedIn} from './components/Login.jsx';
 import WelcomePage from './components/Welcome.jsx';
 import {
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	NavLink,
-	useParams,
-	useRouteMatch,
-	Link,
-	Prompt
-} from 'react-router-dom';
-import Swapi from './components/Swapi.jsx';
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    NavLink,
+    useParams,
+    useRouteMatch,
+    Link,
+    Prompt
+} from "react-router-dom";
+import Swapi from "./components/Swapi.jsx";
+import ShowRoles from "./components/ShowRoles.jsx";
 
 const App = () => {
 	const [loggedIn, setLoggedIn] = useState(false);
@@ -94,28 +95,23 @@ const LogInScreen = ({permission}) => {
 				}
 			});
 	};
+    // Lifts up the state of loggedIn so that we can make routes private.
+    useEffect(() => {
+        permission(loggedIn);
+    }, [loggedIn]);
 
-	// Lifts up the state of loggedIn so that we can make routes private.
-	useEffect(() => {
-		permission(loggedIn);
-	}, [loggedIn]);
-
-	return (
-		<div>
-			{!loggedIn ? (
-				<LogIn login={login} message={message} />
-			) : (
-				<div>
-					<LoggedIn roles={roles} />
-					<button className="btn btn-primary" onClick={logout}>
-						Logout
-					</button>
-				</div>
-			)}
-			<br></br>
-			<Link to="/">Back to WelcomePage</Link>
-		</div>
-	);
+    return (
+        <div>
+            {!loggedIn ? (<LogIn login={login} message={message} />) : (
+                <div>
+                    <ShowRoles roles={roles} />
+                    <LoggedIn roles={roles} />
+                    <button className="btn btn-primary" onClick={logout}> Logout  </button>
+                </div>)}
+            <br></br>
+            <Link to="/">Back to WelcomePage</Link>
+        </div>
+    );
 };
 
 export default App;
