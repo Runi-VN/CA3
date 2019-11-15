@@ -2,8 +2,15 @@
 
 [Task](https://docs.google.com/document/d/1C6tAOaZ75OTHKTf17uUF0PAysJ409KXBNnTME7f966M/edit#)
 
+### Using this project
+1. Follow the guideline in [the backend](/src).
+2. Follow the guideline in [the frontend](/frontend).
+
+### Status
+
 Travis: ![Travis Image](https://travis-ci.org/MalteMagnussen/CA3.svg?branch=master)
 
+### Contributors
  * [Camilla Jenny Valerius Staunstrup](https://github.com/Castau)
  * [Asger Bjarup](https://github.com/HrBjarup)
  * [Rúni Vedel Niclasen](https://github.com/Runi-VN) 
