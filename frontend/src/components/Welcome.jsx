@@ -15,7 +15,7 @@ const Welcome = () => {
 					<code>npm install</code>
 				</li>
 				<li>
-					<code>npm run</code>
+					<code>npm start</code>
 				</li>
 			</ol>
 			<h6>Common issues:</h6>
