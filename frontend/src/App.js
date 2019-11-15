@@ -47,7 +47,6 @@ const NoMatch = () => (
 );
 
 const Header = ({loggedIn}) => {
-	console.log('loggedIn', loggedIn);
 	return (
 		<ul className="header">
 			<li>
