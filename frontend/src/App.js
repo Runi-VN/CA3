@@ -32,9 +32,6 @@ const App = () => {
                         <Route path="/swapi">
                             <Swapi loggedIn={loggedIn} />
                         </Route>
-                        <Route path="/roles">
-                            <ShowRoles roles={loggedIn} />
-                        </Route>
                         <Route>
                             <NoMatch />
                         </Route>
