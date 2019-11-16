@@ -18,7 +18,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  *
@@ -38,7 +39,7 @@ public class ApiFacade {
             Future<Pair<String, String>> future = executor.submit(new Callable<Pair<String, String>>() {
                 @Override
                 public Pair<String, String> call() throws Exception {
-                    return new Pair(endpoint.substring(0, endpoint.length()-1), getApiData(url + endpoint));
+                    return new ImmutablePair(endpoint.substring(0, endpoint.length()-1), getApiData(url + endpoint));
                 }
             });
             queue.add(future);
