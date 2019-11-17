@@ -35,7 +35,7 @@ public class SWAPIRessource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getInfoForAll() {
-        return "{\"msg\":\"Hello anonymous\"}";
+        return "{\"msg\":\"Hello anonymous, we are UP & you are not logged in\"}";
     }
 
     @GET
