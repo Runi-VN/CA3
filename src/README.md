@@ -7,7 +7,7 @@ You might want to delete your `.git`-folder and initialize your repository with 
 1. Open project in Netbeans
 2. Change project properties (name, artifactID, etc) (right-click project -> refactor)
 3. Set up your `database` and `database_test` on droplet and vagrant (local only). 
-    * By default we use `security` & `security_test`
+    * By default we use `security_base` & `security_test`
 
 ### Running local
 4. Ensure Vagrant is up
