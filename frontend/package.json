@@ -1,6 +1,5 @@
 {
   "name": "frontend",
-  "homepage": "http://MalteMagnussen.github.io/CA3",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
