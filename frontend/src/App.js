@@ -24,18 +24,13 @@ const App = () => {
         <Header loggedIn={loggedIn} />
         <div className="container">
           <Switch>
-            <Route exact path="/">
-              <WelcomePage />
-            </Route>
-            <Route path="/login">
-              <LogInScreen permission={setLoggedIn} />
-            </Route>
-            <Route path="/swapi">
-              <Swapi loggedIn={loggedIn} />
-            </Route>
-            <Route>
-              <NoMatch />
-            </Route>
+            <Route exact path="/" component={WelcomePage} />
+            <Route
+              path="/login"
+              render={() => <LogInScreen permission={setLoggedIn} />}
+            />
+            <Route path="/swapi" render={() => <Swapi loggedIn={loggedIn} />} />
+            <Route component={NoMatch} />
           </Switch>
         </div>
       </Router>
