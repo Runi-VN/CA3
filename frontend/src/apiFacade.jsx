@@ -1,5 +1,5 @@
 //Change this before deployment (production)
-import { localURL as URL} from "./settings.js";
+import { onlineURL as URL } from "./settings.js";
 function handleHttpErrors(res) {
   if (!res.ok) {
     return Promise.reject({ status: res.status, fullError: res.json() });
@@ -38,16 +38,16 @@ const ApiFacade = () => {
     const loggedIn = getToken() != null;
     return loggedIn;
   }
-  
+
   const fetchSwapi = () => {
     //Remember to always include options from the makeOptions fucntion with >true< as the second parameter
     //if you want to access a protected endpoint
-    const options = makeOptions("GET",true); //True add's the token
+    const options = makeOptions("GET", true); //True add's the token
     return fetch(URL + "/api/info/five", options).then(handleHttpErrors);
-  }
+  };
 
   //Roles is passed in as parameter from the LoggedIn component in App.js
-  const fetchData = (roles) => {
+  const fetchData = roles => {
     //In order to use the correct endpoints we have to check the roles of the user
     let usertype = "no role";
     //Currently we have three endpoints: "user", "admin" and "both"
@@ -56,10 +56,10 @@ const ApiFacade = () => {
     if (roles.includes("user") && roles.includes("admin")) usertype = "both";
     else if (roles.includes("user")) usertype = "user";
     else if (roles.includes("admin")) usertype = "admin";
-    const options = makeOptions("GET",true); //True add's the token
+    const options = makeOptions("GET", true); //True add's the token
     //The usertype is added to the URL to ensure the right endpoint is used
     return fetch(URL + "/api/info/" + usertype, options).then(handleHttpErrors);
-  }
+  };
 
   const login = (user, pass, setRoles) => {
     const options = makeOptions("POST", true, {

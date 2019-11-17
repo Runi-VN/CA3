@@ -46,18 +46,18 @@ const Header = ({ loggedIn }) => {
   return (
     <ul className="header">
       <li>
-        <NavLink exact activeClassName="active" to="#/">
+        <NavLink exact activeClassName="active" to="/">
           Home
         </NavLink>
       </li>
       <li>
-        <NavLink activeClassName="active" to="#/login">
+        <NavLink activeClassName="active" to="/login">
           Login
         </NavLink>
       </li>
       {loggedIn ? (
         <li>
-          <NavLink activeClassName="active" to="#/swapi">
+          <NavLink activeClassName="active" to="/swapi">
             Star Wars API
           </NavLink>
         </li>
