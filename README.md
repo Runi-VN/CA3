@@ -9,8 +9,7 @@
 
 ### Status
 
-![Travis Image](https://travis-ci.org/MalteMagnussen/CA3.svg?branch=master)
-
+[![Build Status](https://travis-ci.org/Runi-VN/CA3.svg?branch=master)](https://travis-ci.org/Runi-VN/CA3)
 ### Contributors
  * [Camilla Jenny Valerius Staunstrup](https://github.com/Castau)
  * [Asger Bjarup](https://github.com/HrBjarup)
