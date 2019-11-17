@@ -8,7 +8,7 @@ const Swapi = ({ loggedIn }) => {
     <>
       {loggedIn ? <SwapiContent /> : <p>You are not logged in.</p>}
 
-      <Link to="/">Back</Link>
+      <Link to="#/">Back</Link>
     </>
   );
 };
